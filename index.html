@@ -1,0 +1,670 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyDrop Milk Delivery</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8f2;
+            color: #20352b;
+        }
+
+        header {
+            background: #176b55;
+            color: white;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        header h2 span {
+            color: #d7efb9;
+        }
+
+        .hero {
+            padding: 45px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #65756d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .hero-icon {
+            font-size: 100px;
+            background: #e8f4df;
+            border-radius: 25px;
+            padding: 25px 55px;
+        }
+
+        main {
+            padding: 20px 8% 50px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #ccd8cd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .product {
+            background: white;
+            border: 1px solid #e0e8df;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .product-icon {
+            background: #eaf3e6;
+            padding: 25px;
+            text-align: center;
+            font-size: 55px;
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-info p {
+            color: #65756d;
+            margin: 8px 0;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .primary {
+            background: #176b55;
+            color: white;
+        }
+
+        .secondary {
+            background: #e8f4df;
+            color: #173f32;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e0e8df;
+            border-radius: 15px;
+            padding: 22px;
+            margin-top: 30px;
+        }
+
+        .panel h2 {
+            margin-bottom: 15px;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e8df;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity button {
+            background: #e8f4df;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: #176b55;
+            line-height: 1.6;
+        }
+
+        .muted {
+            color: #65756d;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #e8f4df;
+            text-align: center;
+            padding: 22px;
+            color: #65756d;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            .hero, main {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero-icon {
+                font-size: 70px;
+                padding: 20px 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>Daily<span>Drop</span> 🥛</h2>
+    <p>Fresh milk. Right on time.</p>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>Good mornings<br>start fresh.</h1>
+
+        <p>
+            Order fresh milk and dairy products for your daily needs.
+            Choose your products and place a demo order.
+        </p>
+
+        <button class="primary"
+            onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+            Shop Now
+        </button>
+    </div>
+
+    <div class="hero-icon">🥛</div>
+</section>
+
+<main>
+    <section id="shop">
+        <h2>Our Products</h2>
+
+        <div class="toolbar">
+            <input
+                type="search"
+                id="search"
+                placeholder="Search products..."
+                aria-label="Search products">
+
+            <select id="category" aria-label="Filter products">
+                <option value="all">All Categories</option>
+                <option value="Milk">Milk</option>
+                <option value="Dairy">Dairy</option>
+            </select>
+        </div>
+
+        <div class="products" id="products"></div>
+    </section>
+
+    <section class="panel">
+        <h2>
+            Your Basket
+            <span class="muted" id="cartCount">(0 items)</span>
+        </h2>
+
+        <div id="cartItems">
+            <p class="muted">Your basket is empty.</p>
+        </div>
+
+        <div class="total">
+            <span>Total</span>
+            <span id="total">₹0</span>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
+            <button class="primary" onclick="placeOrder()">
+                Place Order
+            </button>
+
+            <button class="secondary" onclick="clearCart()">
+                Clear Basket
+            </button>
+
+            <button class="secondary" onclick="trackOrder()">
+                Track Order
+            </button>
+        </div>
+
+        <p class="message" id="message" role="status"></p>
+    </section>
+
+    <section class="panel">
+        <h2>Design Patterns Used</h2>
+
+        <p><strong>1. Singleton:</strong> Provides one shared configuration
+        object for the application.</p>
+
+        <p><strong>2. Factory:</strong> Creates a delivery option based
+        on the customer's selection.</p>
+
+        <p><strong>3. Observer:</strong> Could notify customers when
+        milk is back in stock or an order status changes.</p>
+
+        <p><strong>4. Strategy:</strong> Could calculate delivery fees
+        using standard, express, or free-delivery rules.</p>
+
+        <p><strong>5. Command:</strong> Could represent actions such as
+        adding products, placing orders, or cancelling orders as objects.</p>
+
+        <p class="muted">
+            Observer, Strategy, and Command are extension ideas here;
+            they are not implemented as complete design patterns in this demo.
+        </p>
+    </section>
+</main>
+
+<footer>
+    DailyDrop Milk Delivery | Educational Project
+    <br>
+    Demo only — no real payments or deliveries.
+</footer>
+
+<script>
+    // PRODUCT DATA
+    const products = [
+        {
+            id: 1,
+            name: "Fresh Cow Milk",
+            size: "500 ml",
+            price: 32,
+            category: "Milk",
+            icon: "🥛"
+        },
+        {
+            id: 2,
+            name: "Full Cream Milk",
+            size: "500 ml",
+            price: 36,
+            category: "Milk",
+            icon: "🧋"
+        },
+        {
+            id: 3,
+            name: "Toned Milk",
+            size: "1 litre",
+            price: 60,
+            category: "Milk",
+            icon: "🥛"
+        },
+        {
+            id: 4,
+            name: "Plain Curd",
+            size: "400 g",
+            price: 38,
+            category: "Dairy",
+            icon: "🥣"
+        },
+        {
+            id: 5,
+            name: "Butter",
+            size: "100 g",
+            price: 58,
+            category: "Dairy",
+            icon: "🧈"
+        },
+        {
+            id: 6,
+            name: "Paneer",
+            size: "200 g",
+            price: 85,
+            category: "Dairy",
+            icon: "🧀"
+        }
+    ];
+
+    const cart = new Map();
+
+    let orderNumber = 0;
+    let latestOrder = null;
+
+
+    // 1. SINGLETON PATTERN
+    // Returns the same configuration object every time.
+
+    const AppConfig = (() => {
+        let instance = null;
+
+        return function () {
+            if (instance === null) {
+                instance = {
+                    serviceName: "DailyDrop",
+                    currency: "INR"
+                };
+            }
+
+            return instance;
+        };
+    })();
+
+    const config1 = AppConfig();
+    const config2 = AppConfig();
+
+    console.log("Singleton working:", config1 === config2);
+
+
+    // 2. FACTORY PATTERN
+    // Creates different delivery options.
+
+    class DeliveryOptionFactory {
+        static create(type) {
+            const options = {
+                standard: {
+                    name: "Standard Delivery",
+                    fee: 10
+                },
+
+                scheduled: {
+                    name: "Scheduled Delivery",
+                    fee: 0
+                }
+            };
+
+            return options[type] || null;
+        }
+    }
+
+
+    // HELPER FUNCTION
+
+    function money(amount) {
+        return "₹" + amount;
+    }
+
+
+    // DISPLAY PRODUCTS
+
+    function renderProducts() {
+        const searchText =
+            document.getElementById("search").value.toLowerCase();
+
+        const category =
+            document.getElementById("category").value;
+
+        const filteredProducts = products.filter(function (product) {
+            const matchesSearch =
+                product.name.toLowerCase().includes(searchText);
+
+            const matchesCategory =
+                category === "all" || product.category === category;
+
+            return matchesSearch && matchesCategory;
+        });
+
+        document.getElementById("products").innerHTML =
+            filteredProducts.map(function (product) {
+                return `
+                    <article class="product">
+                        <div class="product-icon">
+                            ${product.icon}
+                        </div>
+
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.size}</p>
+
+                            <div class="price-row">
+                                <strong>${money(product.price)}</strong>
+
+                                <button class="primary"
+                                    onclick="addToCart(${product.id})">
+                                    Add +
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join("") || "<p>No products found.</p>";
+    }
+
+
+    // ADD PRODUCT TO BASKET
+
+    function addToCart(id) {
+        const currentQuantity = cart.get(id) || 0;
+
+        cart.set(id, currentQuantity + 1);
+
+        renderCart();
+
+        document.getElementById("message").textContent =
+            "Product added to your basket.";
+    }
+
+
+    // CHANGE PRODUCT QUANTITY
+
+    function changeQuantity(id, change) {
+        const quantity = (cart.get(id) || 0) + change;
+
+        if (quantity <= 0) {
+            cart.delete(id);
+        } else {
+            cart.set(id, quantity);
+        }
+
+        renderCart();
+    }
+
+
+    // DISPLAY BASKET
+
+    function renderCart() {
+        const entries = [...cart.entries()];
+
+        const itemCount = entries.reduce(function (sum, entry) {
+            return sum + entry[1];
+        }, 0);
+
+        const total = entries.reduce(function (sum, entry) {
+            const id = entry[0];
+            const quantity = entry[1];
+
+            const product = products.find(function (item) {
+                return item.id === id;
+            });
+
+            return sum + product.price * quantity;
+        }, 0);
+
+        document.getElementById("cartCount").textContent =
+            `(${itemCount} item${itemCount === 1 ? "" : "s"})`;
+
+        document.getElementById("total").textContent = money(total);
+
+        if (entries.length === 0) {
+            document.getElementById("cartItems").innerHTML =
+                '<p class="muted">Your basket is empty.</p>';
+
+            return;
+        }
+
+        document.getElementById("cartItems").innerHTML =
+            entries.map(function (entry) {
+                const id = entry[0];
+                const quantity = entry[1];
+
+                const product = products.find(function (item) {
+                    return item.id === id;
+                });
+
+                return `
+                    <div class="cart-row">
+                        <div>
+                            <strong>${product.name}</strong>
+                            <p class="muted">${money(product.price)} each</p>
+                        </div>
+
+                        <div class="quantity">
+                            <button
+                                onclick="changeQuantity(${id}, -1)"
+                                aria-label="Decrease quantity">−</button>
+
+                            <span>${quantity}</span>
+
+                            <button
+                                onclick="changeQuantity(${id}, 1)"
+                                aria-label="Increase quantity">+</button>
+                        </div>
+
+                        <strong>${money(product.price * quantity)}</strong>
+                    </div>
+                `;
+            }).join("");
+    }
+
+
+    // CLEAR BASKET
+
+    function clearCart() {
+        cart.clear();
+
+        renderCart();
+
+        document.getElementById("message").textContent =
+            "Your basket has been cleared.";
+    }
+
+
+    // PLACE DEMO ORDER
+
+    function placeOrder() {
+        if (cart.size === 0) {
+            document.getElementById("message").textContent =
+                "Please add a product before placing an order.";
+
+            return;
+        }
+
+        // Factory creates the selected delivery option.
+        const delivery =
+            DeliveryOptionFactory.create("standard");
+
+        const subtotal = [...cart.entries()].reduce(
+            function (sum, entry) {
+                const product = products.find(function (item) {
+                    return item.id === entry[0];
+                });
+
+                return sum + product.price * entry[1];
+            },
+            0
+        );
+
+        orderNumber++;
+
+        latestOrder = {
+            id: orderNumber,
+            status: "Order received",
+            total: subtotal + delivery.fee,
+            delivery: delivery.name
+        };
+
+        cart.clear();
+
+        renderCart();
+
+        document.getElementById("message").textContent =
+            `Order #${latestOrder.id} placed successfully! ` +
+            `Delivery fee: ${money(delivery.fee)}. ` +
+            `Total: ${money(latestOrder.total)}.`;
+    }
+
+
+    // TRACK DEMO ORDER
+
+    function trackOrder() {
+        if (latestOrder === null) {
+            document.getElementById("message").textContent =
+                "You have not placed an order yet.";
+
+            return;
+        }
+
+        document.getElementById("message").textContent =
+            `Order #${latestOrder.id}: ${latestOrder.status}. ` +
+            "This is simulated tracking.";
+    }
+
+
+    // SEARCH AND CATEGORY FILTERS
+
+    document.getElementById("search")
+        .addEventListener("input", renderProducts);
+
+    document.getElementById("category")
+        .addEventListener("change", renderProducts);
+
+
+    // START WEBSITE
+
+    renderProducts();
+    renderCart();
+</script>
+
+</body>
+</html>
+```
